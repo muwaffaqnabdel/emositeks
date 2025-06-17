@@ -2,31 +2,272 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deteksi Emosi dari Teks</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+            font-size: 1.1em;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e1e1;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 120px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .result {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);
+        }
+        
+        .result h2 {
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+        
+        .emotion-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 1.2em;
+            font-weight: 600;
+            margin: 10px 0;
+            backdrop-filter: blur(10px);
+        }
+        
+        .confidence-info {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .confidence-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .confidence-fill {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.8s ease;
+        }
+        
+        .conf-tinggi { background: #4CAF50; }
+        .conf-sedang { background: #FF9800; }
+        .conf-rendah { background: #f44336; }
+        .conf-sangat-rendah { background: #9C27B0; }
+        
+        .alert {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+        
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .text-preview {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-style: italic;
+            backdrop-filter: blur(10px);
+        }
+        
+        .confidence-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        .interpretation {
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            font-size: 0.95em;
+            backdrop-filter: blur(10px);
+        }
+    </style>
 </head>
-<body style="background-color: #0d0d0d; color: #fff;">
-    <div class="container mt-5">
-        <h2 class="text-center mb-4">Deteksi Emosi dari Teks</h2>
+<body>
+    <div class="container">
+        <h1>🎭 Deteksi Emosi dari Teks</h1>
+        
         <form method="POST" action="/predict">
-            <div class="mb-3">
-                <textarea class="form-control" name="text" rows="4" placeholder="Tulis teks di sini...">{{ text or '' }}</textarea>
+            <div class="form-group">
+                <textarea name="text" id="text" placeholder="Masukkan teks yang ingin dianalisis..." required>{{ text or '' }}</textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Deteksi Emosi</button>
+            <button type="submit" class="btn">Deteksi Emosi</button>
         </form>
-
-        {% if prediction %}
-          <div class="mt-3 alert alert-success">
-              <strong>Prediksi Emosi:</strong> {{ prediction }}
-          </div>
-        {% endif %}
-
+        
         {% if alert %}
-          <div class="mt-3 alert alert-warning">
-              {{ alert }}
-          </div>
+            <div class="alert alert-warning">
+                {{ alert }}
+            </div>
         {% endif %}
+        
+        {% if prediction %}
+            <div class="result">
+                <h2>
+                    <i class="fas fa-chart-line"></i>
+                    Hasil Analisis Emosi
+                </h2>
+                
+                <div class="text-preview">
+                    <strong>Teks yang dianalisis:</strong><br>
+                    "{{ text }}"
+                </div>
+                
+                <div>
+                    <strong>Emosi yang terdeteksi:</strong>
+                    <div class="emotion-tag">
+                        {% if confidence_level == 'tinggi' %}
+                            {{ prediction.upper() }}
+                        {% elif confidence_level == 'sedang' %}
+                            {{ prediction.upper() }}
+                        {% elif confidence_level == 'rendah' %}
+                            Kemungkinan {{ prediction.upper() }}
+                        {% else %}
+                            Mendekati {{ prediction.upper() }}
+                        {% endif %}
+                    </div>
+                </div>
+                
+                {% if confidence %}
+                    <div class="confidence-info">
+                        <div class="confidence-label">
+                            <strong>Tingkat Keyakinan: {{ confidence }}%</strong>
+                            ({{ confidence_level }})
+                        </div>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill conf-{{ confidence_level.replace(' ', '-') }}" 
+                                style="width: {{ confidence }}%"></div>
+                        </div>
+                        
+                        <div class="interpretation">
+                            {% if confidence >= 70 %}
+                                <i class="fas fa-medal"></i>
+                                Hasil sangat akurat! Model sangat yakin dengan prediksi ini.
+                            {% elif confidence >= 50 %}
+                                <i class="fas fa-thumbs-up"></i>
+                                Hasil cukup akurat. Model cukup yakin dengan prediksi ini.
+                            {% elif confidence >= 30 %}
+                                <i class="fas fa-balance-scale"></i>
+                                Hasil kurang akurat. Mungkin teks mengandung emosi campuran atau ambigu.
+                            {% else %}
+                                <i class="fas fa-microscope"></i>
+                                Hasil tidak terlalu akurat. Teks mungkin netral atau mengandung emosi yang kompleks.
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+        
+        <div style="margin-top: 30px; text-align: center; color: #666; font-size: 0.9em;">
+            <p>
+                <i class="fas fa-lightbulb" style="color: #ffc107;"></i>
+                <strong>Tips:</strong> Gunakan teks yang ekspresif dan mengandung kata-kata emosi untuk hasil yang lebih akurat.
+            </p>
+        </div>
     </div>
 </body>
-
 </html>
