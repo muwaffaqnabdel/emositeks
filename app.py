@@ -13,9 +13,9 @@ stemmer = StemmerFactory().create_stemmer()
 
 # Fungsi preprocessing
 def preprocess(text):
-    text = re.sub(r'[^\w\s]', '', text)
-    text = re.sub(r'\s+', ' ', text).strip()
-    return stemmer.stem(text.lower())
+    text = re.sub(r'[^\w\s]', '', text)  # Hilangkan tanda baca
+    text = re.sub(r'\s+', ' ', text).strip()  # Hilangkan spasi berlebih
+    return stemmer.stem(text.lower())  # Lowercase + stemming
 
 # Route halaman utama
 @app.route('/')
@@ -26,14 +26,15 @@ def home():
 @app.route('/predict', methods=['POST'])
 def predict():
     text = request.form['text']
-    processed_text = preprocess(text)
+    
 
-    # Cek apakah input ada di dataset
-    if processed_text not in dataset_texts:
+    if not text.strip():
         return render_template('index.html', text=text, prediction=None,
-                               alert="⚠️ Teks tidak dikenali oleh model! Silakan masukkan teks lain.")
+                               alert="⚠️ Teks tidak boleh kosong.")
 
+    processed_text = preprocess(text)
     prediction = model.predict([processed_text])[0]
+
     return render_template('index.html', text=text, prediction=prediction)
 
 if __name__ == '__main__':
