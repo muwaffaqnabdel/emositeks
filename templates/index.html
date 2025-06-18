@@ -223,8 +223,7 @@
                             {{ prediction.upper() }}
                         {% elif confidence_level == 'sedang' %}
                             {{ prediction.upper() }}
-                        {% elif confidence_level == 'rendah' %}
-                            Kemungkinan {{ prediction.upper() }}
+                            
                         {% else %}
                             Mendekati {{ prediction.upper() }}
                         {% endif %}
@@ -249,9 +248,6 @@
                             {% elif confidence >= 50 %}
                                 <i class="fas fa-thumbs-up"></i>
                                 Hasil cukup akurat. Model cukup yakin dengan prediksi ini.
-                            {% elif confidence >= 30 %}
-                                <i class="fas fa-balance-scale"></i>
-                                Hasil kurang akurat. Mungkin teks mengandung emosi campuran atau ambigu.
                             {% else %}
                                 <i class="fas fa-microscope"></i>
                                 Hasil tidak terlalu akurat. Teks mungkin netral atau mengandung emosi yang kompleks.

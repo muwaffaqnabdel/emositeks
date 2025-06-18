@@ -1,5 +1,5 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.naive_bayes import MultinomialNB
+from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import make_pipeline
 import pandas as pd
 import joblib
@@ -27,8 +27,8 @@ df['label'] = df['label'].str.strip()
 # Preprocessing
 df['text'] = df['text'].apply(preprocess)
 
-# Buat pipeline TF-IDF + Naive Bayes
-model = make_pipeline(TfidfVectorizer(), MultinomialNB())
+# Buat pipeline TF-IDF + Logistic Regression
+model = make_pipeline(TfidfVectorizer(), LogisticRegression(max_iter=1000))
 model.fit(df['text'], df['label'])
 
 # Simpan model

@@ -17,6 +17,36 @@ def preprocess(text):
     text = re.sub(r'\s+', ' ', text).strip()  # Hilangkan spasi berlebih
     return stemmer.stem(text.lower())  # Lowercase + stemming
 
+def get_manual_confidence(text):
+    text = text.lower()
+
+    # Daftar kata kuat yang sangat mewakili emosi
+    strong_keywords = {
+        'marah': ['marah', 'kesal', 'emosi', 'murka', 'geram'],
+        'sedih': ['sedih', 'menangis', 'kecewa', 'terpuruk', 'duka'],
+        'takut': ['takut', 'cemas', 'khawatir', 'panik', 'ngeri'],
+        'senang': ['senang', 'bahagia', 'gembira', 'ceria', 'suka'],
+        'cinta': ['cinta', 'sayang', 'kasih', 'rindu', 'jatuh hati'],
+        'benci': ['benci', 'muak', 'jijik', 'tidak suka', 'anti']
+    }
+
+    # Kata netral/umum yang tidak langsung menunjukkan emosi
+    neutral_keywords = ['makan', 'gaji', 'pergi', 'tugas', 'kerja', 'belanja', 'kuliah']
+
+    # Cek apakah teks mengandung kata kuat
+    for emotion, keywords in strong_keywords.items():
+        for word in keywords:
+            if word in text:
+                return 100  # Sangat kuat, confidence = 100%
+
+    # Cek apakah teks netral
+    for word in neutral_keywords:
+        if word in text:
+            return 50  # Netral, confidence = 50%
+
+    return 0  # Tidak mengandung informasi emosi, confidence = 0%
+
+
 # Fungsi validasi teks
 def validate_text(text):
     """
@@ -92,12 +122,11 @@ def predict():
             confidence = round(max(proba) * 100, 2)
             
             # Tentukan level confidence
-            if confidence >= 70:
+            if confidence == 100:
                 confidence_level = "tinggi"
             elif confidence >= 50:
                 confidence_level = "sedang"
-            elif confidence >= 30:
-                confidence_level = "rendah"
+                
             else:
                 confidence_level = "sangat rendah"
             
