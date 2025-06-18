@@ -127,7 +127,7 @@
         .confidence-bar {
             width: 100%;
             height: 10px;
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(240, 240, 240, 0.3);
             border-radius: 5px;
             overflow: hidden;
             margin: 10px 0;
@@ -139,10 +139,9 @@
             transition: width 0.8s ease;
         }
         
-        .conf-tinggi { background: #4CAF50; }
-        .conf-sedang { background: #FF9800; }
-        .conf-rendah { background: #f44336; }
-        .conf-sangat-rendah { background: #9C27B0; }
+        .conf-high { background: #4CAF50; }
+        .conf-medium { background: #FF9800; }
+        .conf-low { background: #f44336; }
         
         .alert {
             margin-top: 20px;
@@ -219,11 +218,10 @@
                 <div>
                     <strong>Emosi yang terdeteksi:</strong>
                     <div class="emotion-tag">
-                        {% if confidence_level == 'tinggi' %}
+                        {% if confidence_level == 'high' %}
                             {{ prediction.upper() }}
-                        {% elif confidence_level == 'sedang' %}
+                        {% elif confidence_level == 'medium' %}
                             {{ prediction.upper() }}
-                            
                         {% else %}
                             Mendekati {{ prediction.upper() }}
                         {% endif %}
@@ -237,8 +235,7 @@
                             ({{ confidence_level }})
                         </div>
                         <div class="confidence-bar">
-                            <div class="confidence-fill conf-{{ confidence_level.replace(' ', '-') }}" 
-                                style="width: {{ confidence }}%"></div>
+                            <div class="confidence-fill conf-{{ confidence_level_class }}" style="width: {{ confidence }}%;"></div>
                         </div>
                         
                         <div class="interpretation">

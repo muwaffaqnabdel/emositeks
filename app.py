@@ -143,7 +143,6 @@ def predict():
         
         # Jika model support predict_proba, tampilkan confidence
         confidence = None
-        confidence_level = "tinggi"
         try:
             proba = model.predict_proba([processed_text])[0]
             confidence = round(max(proba) * 100, 2)
@@ -154,14 +153,6 @@ def predict():
                 prediction = rule_emotion
                 confidence = rule_conf
             
-            # Tentukan level confidence
-            if confidence >= 70:
-                confidence_level = "high"
-            elif confidence >= 50:
-                confidence_level = "medium"
-            else:
-                confidence_level = "low"
-            
         except:
             # Model tidak support predict_proba, gunakan manual confidence
             confidence = get_manual_confidence(text)
@@ -170,15 +161,20 @@ def predict():
                 prediction = rule_emotion
                 confidence = rule_conf
             
-            if confidence >= 70:
-                confidence_level = "high"
-            elif confidence >= 50:
-                confidence_level = "medium"
-            else:
-                confidence_level = "low"
-        
-        return render_template('index.html', text=text, prediction=prediction, 
-                            confidence=confidence, confidence_level=confidence_level)
+        # Tentukan level confidence
+        if confidence >= 70:
+            confidence_level = "high"
+        elif confidence >= 50:
+            confidence_level = "medium"
+        else:
+            confidence_level = "low"
+
+        confidence_level_class = confidence_level.replace(" ", "-")
+
+        return render_template('index.html', text=text, prediction=prediction,
+                                confidence=confidence,
+                                confidence_level=confidence_level,
+                                confidence_level_class=confidence_level_class)
     
     except Exception as e:
         # Handle error saat prediksi
