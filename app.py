@@ -13,6 +13,16 @@ stemmer = StemmerFactory().create_stemmer()
 
 # Fungsi preprocessing
 def preprocess(text):
+    # Normalisasi kata slang
+    slang_dict = {
+        'gajian': 'mendapat gaji senang',
+        'belanja': 'membeli senang',
+        'membelikan': 'membeli senang'
+    }
+    
+    for slang, formal in slang_dict.items():
+        text = text.replace(slang, formal)
+    
     text = re.sub(r'[^\w\s]', '', text)  # Hilangkan tanda baca
     text = re.sub(r'\s+', ' ', text).strip()  # Hilangkan spasi berlebih
     return stemmer.stem(text.lower())  # Lowercase + stemming
@@ -25,27 +35,44 @@ def get_manual_confidence(text):
         'marah': ['marah', 'kesal', 'emosi', 'murka', 'geram'],
         'sedih': ['sedih', 'menangis', 'kecewa', 'terpuruk', 'duka'],
         'takut': ['takut', 'cemas', 'khawatir', 'panik', 'ngeri'],
-        'senang': ['senang', 'bahagia', 'gembira', 'ceria', 'suka'],
+        'senang': ['senang', 'bahagia', 'gembira', 'ceria', 'suka', 'gajian', 'gaji', 'membeli', 'belanja'],
         'cinta': ['cinta', 'sayang', 'kasih', 'rindu', 'jatuh hati'],
         'benci': ['benci', 'muak', 'jijik', 'tidak suka', 'anti']
     }
 
     # Kata netral/umum yang tidak langsung menunjukkan emosi
-    neutral_keywords = ['makan', 'gaji', 'pergi', 'tugas', 'kerja', 'belanja', 'kuliah']
+    neutral_keywords = ['makan', 'pergi', 'tugas', 'kerja', 'kuliah']
 
     # Cek apakah teks mengandung kata kuat
     for emotion, keywords in strong_keywords.items():
         for word in keywords:
             if word in text:
-                return 100  # Sangat kuat, confidence = 100%
+                return 85  # Confidence tinggi untuk kata kuat
 
     # Cek apakah teks netral
     for word in neutral_keywords:
         if word in text:
             return 50  # Netral, confidence = 50%
 
-    return 0  # Tidak mengandung informasi emosi, confidence = 0%
+    return 30  # Tidak mengandung informasi emosi yang jelas
 
+def rule_based_emotion(text):
+    """Rule-based emotion detection sebagai fallback"""
+    text_lower = text.lower()
+    
+    # Kata positif
+    if any(word in text_lower for word in ['gajian', 'gaji', 'senang', 'bahagia', 'membeli', 'belanja', 'dapat']):
+        return 'senang', 80
+    
+    # Kata negatif
+    if any(word in text_lower for word in ['sedih', 'kecewa', 'gagal']):
+        return 'sedih', 80
+        
+    # Kata marah
+    if any(word in text_lower for word in ['marah', 'kesal', 'benci']):
+        return 'marah', 80
+        
+    return 'netral', 40
 
 # Fungsi validasi teks
 def validate_text(text):
@@ -121,18 +148,34 @@ def predict():
             proba = model.predict_proba([processed_text])[0]
             confidence = round(max(proba) * 100, 2)
             
+            # Jika confidence ML rendah, gunakan rule-based
+            if confidence < 50:
+                rule_emotion, rule_conf = rule_based_emotion(text)
+                prediction = rule_emotion
+                confidence = rule_conf
+            
             # Tentukan level confidence
-            if confidence == 100:
-                confidence_level = "tinggi"
+            if confidence >= 70:
+                confidence_level = "high"
             elif confidence >= 50:
-                confidence_level = "sedang"
-                
+                confidence_level = "medium"
             else:
-                confidence_level = "sangat rendah"
+                confidence_level = "low"
             
         except:
-            # Model tidak support predict_proba
-            confidence_level = "tidak diketahui"
+            # Model tidak support predict_proba, gunakan manual confidence
+            confidence = get_manual_confidence(text)
+            if confidence < 50:
+                rule_emotion, rule_conf = rule_based_emotion(text)
+                prediction = rule_emotion
+                confidence = rule_conf
+            
+            if confidence >= 70:
+                confidence_level = "high"
+            elif confidence >= 50:
+                confidence_level = "medium"
+            else:
+                confidence_level = "low"
         
         return render_template('index.html', text=text, prediction=prediction, 
                             confidence=confidence, confidence_level=confidence_level)
@@ -145,3 +188,4 @@ def predict():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    
