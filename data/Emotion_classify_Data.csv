@@ -1,23 +1,72 @@
 text,label
 aku sangat bahagia,senang
+aku senang,senang
 hari ini menyenangkan sekali,senang
 aku tersenyum bahagia,senang
+aku sangat gembira hari ini,senang
+aku merasa penuh semangat,senang
+aku tersenyum sepanjang hari,senang
+aku senang mendapatkan hadiah,senang
+aku senang bisa berkumpul,senang
+aku bahagia melihat mereka tertawa,senang
+aku tertawa keras karena lucu,senang
+hari ini penuh sukacita,senang
+aku sangat menikmati hariku,senang
+ini adalah hari terbaikku,senang
+aku merasa sangat ceria,senang
+aku merasa diberkati,senang
+aku menikmati setiap momennya,senang
+semua terasa indah hari ini,senang
+aku sangat antusias dengan acara ini,senang
+aku tidak sabar untuk liburan,senang
+hari ini cuacanya indah sekali,senang
+aku mendapatkan nilai bagus,senang
+aku berhasil mencapai tujuanku,senang
+aku sangat bersyukur hari ini,senang
+semua berjalan sesuai harapan,senang
+aku merasa dicintai,senang
+senyuman ini tulus dari hati,senang
+aku menikmati waktu bersama teman,senang
+aku sangat puas dengan hasilnya,senang
+hari ini sempurna!,senang
+aku benar-benar bahagia!,senang
 saya merasa kecewa,sedih
+aku sedih,sedih
 aku sedih ditinggal teman,sedih
 perasaanku campur aduk dan sedih,sedih
+aku muak melihat tingkahnya,marah
+aku benci harus menghadapi ini,marah
+aku merasa ingin membanting semuanya,marah
+aku marah,marah 
+semuanya membuatku kesal,marah
+aku sangat marah padamu!,marah
+aku ingin menjerit karena emosi,marah
+aku tidak tahan dengan situasi ini,marah
+rasanya ingin memukul tembok,marah
+aku jengkel sekali!,marah
 aku marah sekali hari ini,marah
 saya emosi dengan kejadian tadi,marah
 aku kesal karena dibohongi,marah
 aku takut sendiri di rumah,takut
 merasa cemas akan ujian besok,takut
 aku khawatir tidak lulus,takut
+aku takut gelap,takut
+aku gemetar membayangkan kejadian itu,takut
+aku sangat khawatir,takut
+aku merasa tidak aman,takut
+aku cemas memikirkan masa depan,takut
+aku panik kehilangan dompetku,takut
+aku merasa tidak nyaman,takut
+aku ketakutan dalam mimpi tadi malam,takut
+aku merasa was-was sepanjang hari,takut
+aku kaget,terkejut
 aku kaget sekali mendengar itu,terkejut
 wah aku benar-benar terkejut,terkejut
 aku tidak menyangka hal itu terjadi,terkejut
-Aku merasa sangat sedih hari ini, sedih
-Kenapa semuanya harus seperti ini?, sedih
-Aku kecewa dengan hasilnya, sedih
-Rasanya sakit sekali dihianati, sedih
+Aku merasa sangat sedih hari ini,sedih
+Kenapa semuanya harus seperti ini?,sedih
+Aku kecewa dengan hasilnya,sedih
+Rasanya sakit sekali dihianati,sedih
 Aku merasa tidak dihargai, sedih
 Kenapa mereka meninggalkanku?, sedih
 Aku gagal lagi..., sedih
@@ -49,6 +98,7 @@ Sikapnya membuatku emosi, marah
 Berhenti menyalahkanku terus!, marah
 Aku benci diperlakukan seperti ini, marah
 Dia sangat menjengkelkan!, marah
+aku takut,takut
 Aku merasa takut sekali, takut
 Apa yang akan terjadi padaku?, takut
 Aku tidak yakin bisa melewatinya, takut
@@ -79,4 +129,34 @@ Aku tidak suka tempat seperti ini, jijik
 Semuanya terasa kotor dan menjijikkan, jijik
 Sungguh pengalaman yang sangat buruk, jijik
 Aku ingin segera pergi dari sini, jijik
-
+aku merasa jijik melihat sampah itu,jijik
+bau busuk itu membuatku ingin muntah,jijik
+aku terganggu dengan kelakuannya,jijik
+tempat itu sangat kotor dan menjijikkan,jijik
+aku merasa sangat risih,jijik
+aku tidak tahan melihatnya makan,jijik
+aku jijik melihat darah,jijik
+bau amis itu membuatku tidak nyaman,jijik
+aku mual melihat videonya,jijik
+aku sangat terkejut menerima kabar itu,terkejut
+aku kaget melihat nilai ujianku,terkejut
+aku tidak percaya dengan yang kulihat,terkejut
+aku terdiam karena terkejut,terkejut
+rasanya seperti mimpi!,terkejut
+aku loncat saking kagetnya,terkejut
+aku tercengang,terkejut
+aku tidak menduga sama sekali,terkejut
+semuanya terjadi begitu cepat,terkejut
+aku terbengong sejenak,terkejut
+aku sedih banget hari ini,sedih
+hari ini aku diputusin pacarku,sedih
+Aku merasa sangat kesepian hari ini,sedih
+Hati ini terasa hampa sejak kepergianmu,sedih
+Air mataku tak bisa berhenti mengalir,sedih
+Kenapa semua orang pergi meninggalkanku?,sedih
+Aku kecewa dengan semua harapan yang gagal,sedih
+Hari ini terasa begitu berat dan sunyi,sedih
+Aku sudah berusaha tapi tetap gagal,sedih
+Rasanya dunia tidak adil padaku,sedih
+Aku rindu seseorang yang tak bisa kembali,sedih
+Senyumku hanya topeng dari luka yang dalam,sedih
